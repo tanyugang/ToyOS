@@ -26,12 +26,3 @@ UINT64 KernelStart(BOOT_CONFIG *BootConfig)
     PrintDec(1234567890);
     return PassBack;
 }
-    //PrintHex(0x1234567890ABCDEF);
-    //PrintDec(Len);
-    /*while (1)
-    {
-        ;
-    }
-    
-    return PassBack;
-}*/
