@@ -42,3 +42,6 @@ int SetCursor(UINT8 Count);
 int PrintHex(UINT64 Number);
 int PrintDec(UINT64 Number);
 int PrintStr(char *String);
+int PrintEnter();
+int PrintSpace();
+int PrintByte(UINT8 Number);

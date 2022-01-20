@@ -114,6 +114,31 @@ int SetCursor(UINT8 Count)
     return 0;
 }
 
+int PrintByte(UINT8 Number)
+{
+    UINT8 Trans = Number;
+    char Hex[2];
+    for(int i = 0; i < 2; i++)
+    {
+        Hex[i] = Trans & 0xF;
+        if(Hex[i] >= 0 && Hex[i] <= 9)
+        {
+            Hex[i] += 48;
+        }
+        if(Hex[i] > 9 && Hex[i] < 16)
+        {
+            Hex[i] += 55;
+        }
+        Trans = Trans >> 4;
+    }
+    
+    for(int j = 0; j < 2; j++)
+    {
+        DrawLetter(Hex[2-j-1], Base.Cursor.Pos);
+        SetCursor(1);
+    }  
+    return 0;
+}
 int PrintHex(UINT64 Number)
 {
     UINT64 Trans = Number;
@@ -198,6 +223,20 @@ int PrintStr(char *String)
         DrawLetter(String[i], Base.Cursor.Pos);
         SetCursor(1);    
     }   
+    return 0;
+}
+
+int PrintEnter()
+{
+    DrawLetter(' ', Base.Cursor.Pos);
+    SetCursor(69-Base.Cursor.Col);
+    return 0;
+}
+
+int PrintSpace()
+{
+    DrawLetter(' ', Base.Cursor.Pos);
+    SetCursor(1);
     return 0;
 }
 
