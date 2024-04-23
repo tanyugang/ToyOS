@@ -22,9 +22,24 @@ int VideoInitial(BOOT_CONFIG *BootConfig)
     BackGround.Color = 0xFF18679A;
     DrawBlock(BackGround);
     }
+
+
     return 0;
 }
-
+int DrawFont()
+{
+    UINT32 *From = AsciiStart;
+    UINT32 *To = VideoStart;
+    for(int i = 0; i < 640 * 108; i++)
+    {
+        *To = *From;
+        From++;
+        To++;
+        if((i+1) % 640 == 0)
+            To = To + VideoConfig->PixelsPerScanLine - 640;
+    }
+    return 0;
+}
 int DrawPixel(PIXEL Pixel)
 {
     UINT32 *Position = VideoStart

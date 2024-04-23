@@ -6,8 +6,7 @@ typedef unsigned long long  UINT64;
 typedef UINT64 UINTN;
 typedef UINT64 EFI_PHYSICAL_ADDRESS;
 typedef UINT64 EFI_VIRTUAL_ADDRESS;
-
-#define NULL ((VOID *) 0)
+#define NULL ((VOID *) 0);
 
 typedef enum {
   /// Not used.
@@ -61,12 +60,11 @@ typedef struct
 typedef struct
 {
     EFI_PHYSICAL_ADDRESS       FrameBufferBase;
-    UINT64                     FrameBufferSize;
+    UINT64                      FrameBufferSize;
     UINT32                     HorizontalResolution;
     UINT32                     VerticalResolution;
     UINT32                     PixelsPerScanLine;
 } VIDEO_CONFIG;
-
 
 typedef struct
 {
@@ -79,12 +77,11 @@ typedef struct
     UINT64  ReservedB;
 } EFI_MEMORY_DESCRIPTOR;
 
-
-  
 typedef struct
 {
-    UINTN MapSize;
+    UINTN BufferSize;
     VOID *Buffer;
+    UINTN MapSize;
     UINTN MapKey;
     UINTN DescriptorSize;
     UINT32 DescriptorVersion;
@@ -98,6 +95,7 @@ typedef struct
     UINTN Height;
     UINTN Offset;
     UINT64 PixelStart;
+    UINT64 BitsPerPx;
 } BMP_CONFIG;
 
 typedef struct
@@ -105,5 +103,7 @@ typedef struct
     VIDEO_CONFIG VideoConfig;
     MEMORY_MAP   MemoryMap;
     BMP_CONFIG   AsciiBmp;
+    UINTN ProcessorCount;
+    UINTN LapicID[256];
 } BOOT_CONFIG;
 #pragma pack()

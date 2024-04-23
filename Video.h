@@ -35,8 +35,6 @@ typedef struct
 int VideoInitial(BOOT_CONFIG *BootConfig);
 int DrawPixel(PIXEL Pixel);
 int DrawBlock(BLOCK Block);
-
+int DrawFont();
 int DrawLetter(UINT8 Index, POINT Destination);
 int DrawBmp(BOOT_CONFIG BootConfig);
-
-

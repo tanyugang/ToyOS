@@ -1,6 +1,12 @@
 # Prerequisites
 *.d
 
+# Gitignore
+.gitignore
+
+# Shell
+*.sh
+
 # Object files
 *.o
 *.ko
@@ -50,6 +56,3 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-
-# File only used by Tank
-Toy.sh

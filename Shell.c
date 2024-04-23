@@ -37,7 +37,7 @@ int ShellInitial()
         OutLine.End.X = 1420;
         OutLine.End.Y = 22;
         DrawBlock(OutLine);
-        
+
         // Draw OutLine Middle
         OutLine.Start.X =  22;
         OutLine.Start.Y = 68;
@@ -51,7 +51,7 @@ int ShellInitial()
         OutLine.End.X = 1420;
         OutLine.End.Y = 880;
         DrawBlock(OutLine);
-    
+
         // Draw OutLine Left
         OutLine.Start.X =  20;
         OutLine.Start.Y = 22;
@@ -66,13 +66,13 @@ int ShellInitial()
         OutLine.End.Y = 878;
         DrawBlock(OutLine);
     }
-    
+
     POINT Dest;
     Dest.X = 30;
     Dest.Y = 78;
     //DrawLetter('T', Dest);
 
-    
+
     Base.Head.Title[0] = 'T';
     Base.Head.Title[1] = 'o';
     Base.Head.Title[2] = 'y';
@@ -82,7 +82,7 @@ int ShellInitial()
     POINT TitleStart;
     TitleStart.X = (Base.Setup.Width - 20 * 5) / 2 + 22;
     TitleStart.Y = (46 - 36) / 2 + 22;
-    
+
     for(int i = 0; i < 5; i++)
     {
         DrawLetter(Base.Head.Title[i], TitleStart);
@@ -110,39 +110,14 @@ int SetCursor(UINT8 Count)
     Cursor.End.X = Cursor.Start.X + 18;
     Cursor.End.Y = Cursor.Start.Y + 3;
     DrawBlock(Cursor);
-    
+
     return 0;
 }
 
-int PrintByte(UINT8 Number)
-{
-    UINT8 Trans = Number;
-    char Hex[2];
-    for(int i = 0; i < 2; i++)
-    {
-        Hex[i] = Trans & 0xF;
-        if(Hex[i] >= 0 && Hex[i] <= 9)
-        {
-            Hex[i] += 48;
-        }
-        if(Hex[i] > 9 && Hex[i] < 16)
-        {
-            Hex[i] += 55;
-        }
-        Trans = Trans >> 4;
-    }
-    
-    for(int j = 0; j < 2; j++)
-    {
-        DrawLetter(Hex[2-j-1], Base.Cursor.Pos);
-        SetCursor(1);
-    }  
-    return 0;
-}
 int PrintHex(UINT64 Number)
 {
     UINT64 Trans = Number;
-    
+
     DrawLetter('0', Base.Cursor.Pos);
     SetCursor(1);
     DrawLetter('x', Base.Cursor.Pos);
@@ -168,7 +143,7 @@ int PrintHex(UINT64 Number)
             break;
         }
     }
-    
+
     for(int j = 0; j < Len; j++)
     {
         DrawLetter(Hex[Len-j-1], Base.Cursor.Pos);
@@ -211,7 +186,7 @@ int PrintStr(char *String)
         Len++;
         ToPrint++;
     }
-    
+
     for(int i = 0; i < Len; i++)
     {
         if(String[i] == '\n')
@@ -240,3 +215,28 @@ int PrintSpace()
     return 0;
 }
 
+int PrintByte(UINT8 Number)
+{
+    UINT8 Trans = Number;
+    char Hex[2];
+    for(int i = 0; i < 2; i++)
+    {
+        Hex[i] = Trans & 0xF;
+        if(Hex[i] >= 0 && Hex[i] <= 9)
+        {
+            Hex[i] += 48;
+        }
+        if(Hex[i] > 9 && Hex[i] < 16)
+        {
+            Hex[i] += 55;
+        }
+        Trans = Trans >> 4;
+    }
+
+    for(int j = 0; j < 2; j++)
+    {
+        DrawLetter(Hex[2-j-1], Base.Cursor.Pos);
+        SetCursor(1);
+    }  
+    return 0;
+}
