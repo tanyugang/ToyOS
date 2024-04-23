@@ -1,12 +1,6 @@
 # Prerequisites
 *.d
 
-# Gitignore
-.gitignore
-
-# Shell
-*.sh
-
 # Object files
 *.o
 *.ko
