@@ -19,7 +19,7 @@ int ShellInitial()
 
     // Draw  Background
     BLOCK BackGround;
-    BackGround.Color = 0xFF000000;
+    BackGround.Color = 0x00000000;
     BackGround.Start.X =  20;
     BackGround.Start.Y = 20;
     BackGround.End.X = 1420;

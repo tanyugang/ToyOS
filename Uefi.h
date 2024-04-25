@@ -1,5 +1,6 @@
 typedef void VOID;
 typedef unsigned char UINT8;
+typedef unsigned short UINT16;
 typedef UINT8 CHAR8;
 typedef unsigned int  UINT32;
 typedef unsigned long long  UINT64;
@@ -98,12 +99,71 @@ typedef struct
     UINT64 BitsPerPx;
 } BMP_CONFIG;
 
+typedef struct SDT_HEADER
+{
+    CHAR8 Signature[4];
+    UINT32 Length;
+    UINT8 Revision;
+    UINT8 CheckSum;
+    CHAR8 OEMID[6];
+    CHAR8 TableID[8];
+    UINT32 OEMRevision;
+    UINT32 CreatorID;
+    UINT32 CreatorRevision;
+} SDT_HEADER;
+
+typedef struct MADT
+{
+    SDT_HEADER Header;
+    UINT32 LapicAddress;
+    UINT32 Flags;
+} MADT;
+
+typedef struct MADT_ENTRY
+{
+    UINT8 EntryType;
+    UINT8 RecordLength;
+} MADT_ENTRY;
+
+typedef struct LAPIC
+{
+    MADT_ENTRY Entry;
+    UINT8 ProcessorID;
+    UINT8 LapicID;
+    UINT32 Flags;
+} LAPIC;
+
+typedef struct IOAPIC
+{
+    MADT_ENTRY Entry;
+    UINT8 IopaicID;
+    UINT8 Reserved;
+    UINT32 IoapicAddress;
+    UINT32 GlobalSystemInterruptBase;
+} IOAPIC;
+
+typedef struct ISO
+{
+    MADT_ENTRY Entry;
+    UINT8 BusSource;
+    UINT8 IrqSourece;
+    UINT32 Gsi;
+    UINT16 Flags;
+} ISO;
+
+typedef struct NMI
+{
+    MADT_ENTRY Entry;
+    UINT8 AcpiProcessorID;
+    UINT16 Flags;
+    UINT8 Lint;
+} NMI;
+
 typedef struct
 {
     VIDEO_CONFIG VideoConfig;
     MEMORY_MAP   MemoryMap;
     BMP_CONFIG   AsciiBmp;
-    UINTN ProcessorCount;
-    UINTN LapicID[256];
+    EFI_PHYSICAL_ADDRESS MadtAddress;
 } BOOT_CONFIG;
 #pragma pack()
