@@ -80,7 +80,6 @@ typedef struct
 
 typedef struct
 {
-    UINTN BufferSize;
     VOID *Buffer;
     UINTN MapSize;
     UINTN MapKey;
@@ -164,6 +163,7 @@ typedef struct
     VIDEO_CONFIG VideoConfig;
     MEMORY_MAP   MemoryMap;
     BMP_CONFIG   AsciiBmp;
+    EFI_PHYSICAL_ADDRESS KernelEntryPoint;
     EFI_PHYSICAL_ADDRESS MadtAddress;
 } BOOT_CONFIG;
 #pragma pack()

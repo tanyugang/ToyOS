@@ -109,7 +109,7 @@ int MemInitial(BOOT_CONFIG *BootConfig)
     PrintSpace();
     PrintDec(OsMemDescNum);
     PrintEnter();
-    /*
+    
     OsMemory = (OS_MEMORY_DESCRIPTOR *)OsMemoryAddress;
     UINT64 TotalMemory = 0;
     for(int i = 0; i < OsMemDescNum; i++)
@@ -145,6 +145,6 @@ int MemInitial(BOOT_CONFIG *BootConfig)
     PrintStr(HeadToPrint);
     PrintDec(TotalMemory >> 8);
     PrintSpace();
-    PrintStr(TailToPrint);*/
+    PrintStr(TailToPrint);
     return 0;
 }
