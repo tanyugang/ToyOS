@@ -9,7 +9,7 @@ UINT64 KernelStart(BOOT_CONFIG *BootConfig)
 
     ShellInitial();
 
-    MemInitial(BootConfig);
+    //MemInitial(BootConfig);
 
     int i = 0x2C;
     MADT *Madt = (MADT *)BootConfig->MadtAddress;
