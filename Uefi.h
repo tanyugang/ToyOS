@@ -49,6 +49,7 @@ typedef enum {
   EfiPersistentMemory,
   EfiMaxMemoryType
 } EFI_MEMORY_TYPE;
+
 #pragma pack(1)
 typedef struct
 {

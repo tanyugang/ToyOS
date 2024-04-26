@@ -8,7 +8,7 @@ int ShellInitial()
     Base.Setup.Width = 1400;
     Base.Setup.X = 20;
     Base.Setup.Y = 20;
-    Base.Setup.OutLines = 1;
+    Base.Setup.OutLines = 0;
 
     Base.Cursor.Row = 0;// Max 69
     Base.Cursor.Col = 0;// Max 22

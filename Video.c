@@ -23,9 +23,9 @@ int VideoInitial(BOOT_CONFIG *BootConfig)
     DrawBlock(BackGround);
     }
 
-
     return 0;
 }
+
 int DrawFont()
 {
     UINT32 *From = AsciiStart;
