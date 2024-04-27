@@ -8,9 +8,11 @@ UINT64 KernelStart(BOOT_CONFIG *BootConfig)
     VideoInitial(BootConfig);
 
     ShellInitial();
-
-    //MemInitial(BootConfig);
-
+    
+    PrintStr("Hello, World!\n");
+    
+    /*MemInitial(BootConfig);
+    while(1);
     int i = 0x2C;
     MADT *Madt = (MADT *)BootConfig->MadtAddress;
     
@@ -53,7 +55,7 @@ UINT64 KernelStart(BOOT_CONFIG *BootConfig)
         }
     }
     
-    /*switch(*EntryType)
+    switch(*EntryType)
     {
     case 0:
         PrintStr("LAPIC ID:");

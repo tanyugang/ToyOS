@@ -1,108 +1,45 @@
 #include "Shell.h"
 
 BASE Base;
+UINT16 MaxCol = 0;
+UINT16 MaxRow = 0;
 
 int ShellInitial()
 {
-    Base.Setup.Height = 860;
-    Base.Setup.Width = 1400;
-    Base.Setup.X = 20;
-    Base.Setup.Y = 20;
-    Base.Setup.OutLines = 0;
-
-    Base.Cursor.Row = 0;// Max 69
-    Base.Cursor.Col = 0;// Max 22
-    Base.Cursor.Start.X = 30;
-    Base.Cursor.Start.Y = 78;
-    Base.Cursor.Pos.X = Base.Cursor.Start.X;
-    Base.Cursor.Pos.Y = Base.Cursor.Start.Y;
-
-    // Draw  Background
+    MaxCol = Resolution.Horizontal / LetterWidth;
+    MaxRow = Resolution.Vertical / LetterHeight;
+ 
     BLOCK BackGround;
-    BackGround.Color = 0x00000000;
-    BackGround.Start.X =  20;
-    BackGround.Start.Y = 20;
-    BackGround.End.X = 1420;
-    BackGround.End.Y = 880;
-    DrawBlock(BackGround);
-
-
-    if(Base.Setup.OutLines)
-    {    
-        // Draw OutLine Up
-        BLOCK OutLine;
-        OutLine.Color = 0xFFFFFFFF;
-        OutLine.Start.X =  20;
-        OutLine.Start.Y = 20;
-        OutLine.End.X = 1420;
-        OutLine.End.Y = 22;
-        DrawBlock(OutLine);
-
-        // Draw OutLine Middle
-        OutLine.Start.X =  22;
-        OutLine.Start.Y = 68;
-        OutLine.End.X = 1418;
-        OutLine.End.Y = 70;
-        DrawBlock(OutLine);
-
-        // Draw OutLine Down
-        OutLine.Start.X =  20;
-        OutLine.Start.Y = 878;
-        OutLine.End.X = 1420;
-        OutLine.End.Y = 880;
-        DrawBlock(OutLine);
-
-        // Draw OutLine Left
-        OutLine.Start.X =  20;
-        OutLine.Start.Y = 22;
-        OutLine.End.X = 22;
-        OutLine.End.Y = 878;
-        DrawBlock(OutLine);
-
-        // Draw OutLine right
-        OutLine.Start.X =  1418;
-        OutLine.Start.Y = 22;
-        OutLine.End.X = 1420;
-        OutLine.End.Y = 878;
-        DrawBlock(OutLine);
-    }
-
-    POINT Dest;
-    Dest.X = 30;
-    Dest.Y = 78;
-    //DrawLetter('T', Dest);
-
-
-    Base.Head.Title[0] = 'T';
-    Base.Head.Title[1] = 'o';
-    Base.Head.Title[2] = 'y';
-    Base.Head.Title[3] = 'O';
-    Base.Head.Title[4] = 'S';
-
-    POINT TitleStart;
-    TitleStart.X = (Base.Setup.Width - 20 * 5) / 2 + 22;
-    TitleStart.Y = (46 - 36) / 2 + 22;
-
-    for(int i = 0; i < 5; i++)
     {
-        DrawLetter(Base.Head.Title[i], TitleStart);
-        TitleStart.X += 20;
+    BackGround.Start.X = 0;
+    BackGround.Start.Y = 0;
+    BackGround.End.X = Resolution.Horizontal - 1;
+    BackGround.End.Y = Resolution.Vertical - 1;
+    BackGround.Color = 0x00000000;
+    DrawBlock(BackGround);
     }
-
     SetCursor(0);
+    PrintStr("Horizotal: ");
+    PrintDec(Resolution.Horizontal);
+    PrintStr("\nVertical: ");
+    PrintDec(Resolution.Vertical);
+    PrintStr("\nMaxCol: ");
+    PrintDec(MaxCol);
+    PrintStr("\nMaxRow: ");
+    PrintDec(MaxRow);
     return 0;
 }
 
 int SetCursor(UINT8 Count)
 {
     Base.Cursor.Col += Count;
-    if(Base.Cursor.Col >= 69)
+    if(Base.Cursor.Col >= MaxCol)
     {
-        Base.Cursor.Row += Base.Cursor.Col / 69;
-        Base.Cursor.Col = Base.Cursor.Col % 69;
+        Base.Cursor.Row += Base.Cursor.Col / MaxCol;
+        Base.Cursor.Col = Base.Cursor.Col % MaxCol;
     }
-    Base.Cursor.Pos.X = Base.Cursor.Start.X + Base.Cursor.Col * 20;
-    Base.Cursor.Pos.Y = Base.Cursor.Start.Y + Base.Cursor.Row * 36;
+    Base.Cursor.Pos.X = Base.Cursor.Start.X + Base.Cursor.Col * LetterWidth;
+    Base.Cursor.Pos.Y = Base.Cursor.Start.Y + Base.Cursor.Row * LetterHeight;
     BLOCK Cursor;
     Cursor.Color = 0xFFFFFFFF;
     Cursor.Start.X = Base.Cursor.Pos.X + 1;
@@ -192,7 +129,7 @@ int PrintStr(char *String)
         if(String[i] == '\n')
         {
             DrawLetter(' ', Base.Cursor.Pos);
-            SetCursor(69-Base.Cursor.Col);
+            SetCursor(MaxCol - Base.Cursor.Col);
             continue;
         }
         DrawLetter(String[i], Base.Cursor.Pos);
@@ -204,7 +141,7 @@ int PrintStr(char *String)
 int PrintEnter()
 {
     DrawLetter(' ', Base.Cursor.Pos);
-    SetCursor(69-Base.Cursor.Col);
+    SetCursor(MaxCol - Base.Cursor.Col);
     return 0;
 }
 

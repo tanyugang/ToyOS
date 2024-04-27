@@ -1,5 +1,5 @@
 #include "Video.h"
-
+extern RESOLUTION Resolution;
 #pragma pack(1)
 
 typedef struct

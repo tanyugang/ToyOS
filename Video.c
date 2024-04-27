@@ -4,6 +4,7 @@ BMP_CONFIG *AsciiBmp;
 UINT32 *AsciiStart;
 VIDEO_CONFIG *VideoConfig;
 UINT32 *VideoStart;
+RESOLUTION Resolution;
 
 int VideoInitial(BOOT_CONFIG *BootConfig)
 {
@@ -11,18 +12,8 @@ int VideoInitial(BOOT_CONFIG *BootConfig)
     AsciiStart = (UINT32 *)BootConfig->AsciiBmp.PixelStart;
     VideoConfig = &BootConfig->VideoConfig;
     VideoStart = (UINT32 *)BootConfig->VideoConfig.FrameBufferBase;
-
-    BLOCK BackGround;
-
-    {
-    BackGround.Start.X = 0;
-    BackGround.Start.Y = 0;
-    BackGround.End.X = BootConfig->VideoConfig.HorizontalResolution - 1;
-    BackGround.End.Y = BootConfig->VideoConfig.VerticalResolution - 1;
-    BackGround.Color = 0xFF18679A;
-    DrawBlock(BackGround);
-    }
-
+    Resolution.Horizontal = BootConfig->VideoConfig.HorizontalResolution;
+    Resolution.Vertical = BootConfig->VideoConfig.VerticalResolution;
     return 0;
 }
 
@@ -65,15 +56,16 @@ int DrawBlock(BLOCK Block)
     return 0;
 }
 
+
 int DrawLetter(UINT8 Ascii, POINT Destination)
 {
-    UINT8 Index = Ascii - 32;
-    if(Ascii < 32 || Ascii > 126) // 0x20~0x7E
+    UINT8 Index = Ascii - InVisiable;
+    if(Ascii < 32 || Ascii > 126) // 0x20~0x7E之外的字符，不可见，以波浪线代替
     {
-        Index = 127 - 32;
+        Index = 95;//
     }
-    UINT32 *From = AsciiStart + (Index % 32) * LetterWidth
-                   + (Index / 32) * LetterHeight * AsciiBmp->Width;
+    UINT32 *From = AsciiStart + (Index % LetterOneRow) * LetterWidth
+                   + (Index / LetterOneRow) * LetterHeight * AsciiBmp->Width;
     UINT32 *To = VideoStart + Destination.X
                  + Destination.Y * VideoConfig->PixelsPerScanLine;
     for(int i = 0; i < LetterHeight; i++)

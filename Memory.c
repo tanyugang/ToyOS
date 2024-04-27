@@ -3,8 +3,8 @@
 int MemInitial(BOOT_CONFIG *BootConfig)
 {
     EFI_MEMORY_DESCRIPTOR *EfiMemory = (EFI_MEMORY_DESCRIPTOR *)(BootConfig->MemoryMap.Buffer);
-    
-    /*for(int i = 0; i < 22; i++)
+    /*
+    for(int i = 0; i < 22; i++)
     {
         PrintHex(EfiMemory->Type);
         PrintSpace();
@@ -18,7 +18,7 @@ int MemInitial(BOOT_CONFIG *BootConfig)
         PrintEnter();
         EfiMemory++;
     }
-
+    
     char *MemDesc = (char *)(BootConfig->MemoryMap.Buffer);
     PrintHex((UINT64)(BootConfig->MemoryMap.Buffer));
     PrintSpace();

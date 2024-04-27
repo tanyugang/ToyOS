@@ -1,3 +1,4 @@
+rm *.o *.elf
 clang Kernel.c Video.c Shell.c Memory.c -c -nostdlib -ffreestanding 
 ld.lld Kernel.o Video.o Shell.o Memory.o -e KernelStart -o Kernel.elf
 cp $HOME/ToyOS/OS/Kernel.elf $HOME/ToyOS/OVMF/ESP/Kernel.elf

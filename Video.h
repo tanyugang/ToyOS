@@ -2,6 +2,8 @@
 
 #define LetterWidth 20
 #define LetterHeight 36
+#define LetterOneRow 32
+#define InVisiable 32
 #pragma pack(1)
 
 typedef struct
@@ -24,6 +26,11 @@ typedef struct
     UINT32 Color;
 } BLOCK;
 
+typedef struct 
+{
+    UINT16 Horizontal;
+    UINT16 Vertical;
+} RESOLUTION;
 typedef struct
 {
     UINT32 *Start;
