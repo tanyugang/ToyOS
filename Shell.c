@@ -27,6 +27,7 @@ int ShellInitial()
     PrintDec(MaxCol);
     PrintStr("\nMaxRow: ");
     PrintDec(MaxRow);
+    PrintStr("\n");
     return 0;
 }
 

@@ -1,4 +1,5 @@
-#include "Memory.h"
+#include "Kernel.h"
+int LoadGDT();
 
 UINT64 KernelStart(BOOT_CONFIG *BootConfig)
 {  
@@ -9,10 +10,9 @@ UINT64 KernelStart(BOOT_CONFIG *BootConfig)
 
     ShellInitial();
     
-    PrintStr("Hello, World!\n");
-    
-    /*MemInitial(BootConfig);
-    while(1);
+    //LoadGDT();
+    MemInitial(BootConfig);
+    /*while(1);
     int i = 0x2C;
     MADT *Madt = (MADT *)BootConfig->MadtAddress;
     
@@ -90,8 +90,61 @@ UINT64 KernelStart(BOOT_CONFIG *BootConfig)
         break;
 
     }*/
+    EFI_TIME CurrentTime;
+    EFI_TIME_CAPABILITIES CurrentTimeCap;
+    BootConfig->RunTimeServices->GetTime(&CurrentTime, &CurrentTimeCap);
+    PrintDec(CurrentTime.Year);
+    PrintSpace();
+    PrintDec(CurrentTime.Month);
+    PrintSpace();
+    PrintDec(CurrentTime.Day);
+    PrintSpace();
+    PrintDec(CurrentTime.Hour);
+    PrintSpace();
+    PrintDec(CurrentTime.Minute);
+    PrintSpace();
+    PrintDec(CurrentTime.Second);
     while(1);
     return PassBack;
 }
+
+int LoadGDT()
+{
+    GDT Gdt;
+    // NULL Descriptior
+    Gdt.Descriptor[0].LimitLow = 0xFFFF;
+    Gdt.Descriptor[0].BaseLow = 0;
+    Gdt.Descriptor[0].BaseMiddle = 0;
+    Gdt.Descriptor[0].AccessByte = 0x9B;
+    Gdt.Descriptor[0].LimitAndFlags = 0xCF;
+    Gdt.Descriptor[0].BaseHigh = 0xFF;
+    // Kernel Code Segment
+    Gdt.Descriptor[1].LimitLow = 0xFFFF;
+    Gdt.Descriptor[1].BaseLow = 0;
+    Gdt.Descriptor[1].BaseMiddle = 0;
+    Gdt.Descriptor[1].AccessByte = 0x9B;
+    Gdt.Descriptor[1].LimitAndFlags = 0xCF;
+    Gdt.Descriptor[1].BaseHigh = 0xFF;
+
+    // Kernel Data Segment
+    Gdt.Descriptor[2].LimitLow = 0xFFFF;
+    Gdt.Descriptor[2].BaseLow = 0;
+    Gdt.Descriptor[2].BaseMiddle = 0;
+    Gdt.Descriptor[2].AccessByte = 0x93;
+    Gdt.Descriptor[2].LimitAndFlags = 0xCF;
+    Gdt.Descriptor[2].BaseHigh = 0xFF;
+    // Access Byte
+    // P DPL S E DC RW A
+    // 1 00  1 1 0  1  1
+    // 1 00  1 0 0  1  1
+    Gdt.Length = (UINT64)&Gdt.Descriptor[2].BaseHigh - (UINT64)&Gdt;
+    Gdt.Address = (EFI_PHYSICAL_ADDRESS)&Gdt;
+
+    asm("LGDT %0": :"m"(Gdt.Length));
+
+    return 0;
+
+}
+
     
     
