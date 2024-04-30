@@ -10,7 +10,7 @@ UINT64 KernelStart(BOOT_CONFIG *BootConfig)
 
     ShellInitial();
     
-    //LoadGDT();
+    LoadGDT();
     MemInitial(BootConfig);
     /*while(1);
     int i = 0x2C;
@@ -90,9 +90,22 @@ UINT64 KernelStart(BOOT_CONFIG *BootConfig)
         break;
 
     }*/
+
+    
+    BOOLEAN Enabled;
+    BOOLEAN Pending;
+    EFI_TIME WakeupTime;
+    EFI_RUNTIME_SERVICES *RunTimeServices = BootConfig->RunTimeServices;
+    RunTimeServices->GetWakeupTime(&Enabled, &Pending, &WakeupTime);
+    PrintDec(WakeupTime.Year);
+    PrintSpace();
+
+    EFI_STATUS Status;
     EFI_TIME CurrentTime;
     EFI_TIME_CAPABILITIES CurrentTimeCap;
-    BootConfig->RunTimeServices->GetTime(&CurrentTime, &CurrentTimeCap);
+    Status = BootConfig->RunTimeServices->GetTime(&CurrentTime, NULL);
+    PrintHex(Status);
+    PrintSpace();
     PrintDec(CurrentTime.Year);
     PrintSpace();
     PrintDec(CurrentTime.Month);
@@ -104,6 +117,10 @@ UINT64 KernelStart(BOOT_CONFIG *BootConfig)
     PrintDec(CurrentTime.Minute);
     PrintSpace();
     PrintDec(CurrentTime.Second);
+    PrintSpace();
+    PrintDec(CurrentTime.Nanosecond);
+
+    BootConfig->RunTimeServices->ResetSystem(EfiResetShutdown, 0, 4096, NULL);
     while(1);
     return PassBack;
 }

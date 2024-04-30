@@ -1,222 +1,4 @@
-typedef void VOID;
-typedef unsigned char UINT8;
-typedef unsigned short UINT16;
-typedef UINT8 CHAR8;
-typedef unsigned short CHAR16;
-typedef unsigned int  UINT32;
-typedef unsigned long long  UINT64;
-typedef UINT64 UINTN;
-typedef UINT64 EFI_PHYSICAL_ADDRESS;
-typedef UINT64 EFI_VIRTUAL_ADDRESS;
-typedef unsigned char BOOLEAN;
-typedef short INT16;
-typedef UINT64 EFI_STATUS;
-typedef VOID *EFI_HANDLE;
-
-#define IN
-#define OUT
-#define EFIAPI __attribute__((ms_abi))
-#define OPTIONAL
-#define NULL ((VOID *) 0)
-
-typedef enum {
-  /// Not used.
-  EfiReservedMemoryType,
-  /// The code portions of a loaded application.
-  /// (Note that UEFI OS loaders are UEFI applications.)
-  EfiLoaderCode,
-  /// The data portions of a loaded application and the default data allocation
-  /// type used by an application to allocate pool memory.
-  EfiLoaderData,
-  /// The code portions of a loaded Boot Services Driver.
-  EfiBootServicesCode,
-  /// The data portions of a loaded Boot Serves Driver, and the default data
-  /// allocation type used by a Boot Services Driver to allocate pool memory.
-  EfiBootServicesData,
-  /// The code portions of a loaded Runtime Services Driver.
-  EfiRuntimeServicesCode,
-  /// The data portions of a loaded Runtime Services Driver and the default
-  /// data allocation type used by a Runtime Services Driver to allocate pool memory.
-  EfiRuntimeServicesData,
-  /// Free (unallocated) memory.
-  EfiConventionalMemory,
-  /// Memory in which errors have been detected.
-  EfiUnusableMemory,
-  /// Memory that holds the ACPI tables.
-  EfiACPIReclaimMemory,
-  /// Address space reserved for use by the firmware.
-  EfiACPIMemoryNVS,
-  /// Used by system firmware to request that a memory-mapped IO region
-  /// be mapped by the OS to a virtual address so it can be accessed by EFI runtime services.
-  EfiMemoryMappedIO,
-  /// System memory-mapped IO region that is used to translate memory
-  /// cycles to IO cycles by the processor.
-  EfiMemoryMappedIOPortSpace,
-  /// Address space reserved by the firmware for code that is part of the processor.
-  EfiPalCode,
-  /// A memory region that operates as EfiConventionalMemory,
-  /// however it happens to also support byte-addressable non-volatility.
-  EfiPersistentMemory,
-  EfiMaxMemoryType
-} EFI_MEMORY_TYPE;
-
-typedef struct {
-  UINT16    Year;
-  UINT8     Month;
-  UINT8     Day;
-  UINT8     Hour; 
-  UINT8     Minute;
-  UINT8     Second;
-  UINT8     Pad1;
-  UINT32    Nanosecond;
-  INT16     TimeZone;
-  UINT8     Daylight;
-  UINT8     Pad2;
-} EFI_TIME;
-
-typedef struct {
-  ///
-  /// Provides the reporting resolution of the real-time clock device in
-  /// counts per second. For a normal PC-AT CMOS RTC device, this
-  /// value would be 1 Hz, or 1, to indicate that the device only reports
-  /// the time to the resolution of 1 second.
-  ///
-  UINT32     Resolution;
-  ///
-  /// Provides the timekeeping accuracy of the real-time clock in an
-  /// error rate of 1E-6 parts per million. For a clock with an accuracy
-  /// of 50 parts per million, the value in this field would be
-  /// 50,000,000.
-  ///
-  UINT32     Accuracy;
-  ///
-  /// A TRUE indicates that a time set operation clears the device's
-  /// time below the Resolution reporting level. A FALSE
-  /// indicates that the state below the Resolution level of the
-  /// device is not cleared when the time is set. Normal PC-AT CMOS
-  /// RTC devices set this value to FALSE.
-  ///
-  BOOLEAN    SetsToZero;
-} EFI_TIME_CAPABILITIES;
-
-
-typedef 
-EFI_STATUS
-(EFIAPI *EFI_GET_TIME)(
-  OUT  EFI_TIME                    *Time,
-  OUT  EFI_TIME_CAPABILITIES       *Capabilities OPTIONAL
-  );
-
-#pragma pack(1)
-typedef struct
-{
-  UINT8 Blue;
-  UINT8 Green;
-  UINT8 Red;
-  UINT8 Reserved;
-} BGR_PIXEL;
-
-typedef struct
-{
-    EFI_PHYSICAL_ADDRESS       FrameBufferBase;
-    UINT64                     FrameBufferSize;
-    UINT32                     HorizontalResolution;
-    UINT32                     VerticalResolution;
-    UINT32                     PixelsPerScanLine;
-} VIDEO_CONFIG;
-
-typedef struct
-{
-    UINT32  Type;
-    UINT32  ReservedA;
-    EFI_PHYSICAL_ADDRESS PhysicalStart;
-    EFI_VIRTUAL_ADDRESS  VirtualStart;
-    UINT64  NumberOfPages;
-    UINT64  Attribute;
-    UINT64  ReservedB;
-} EFI_MEMORY_DESCRIPTOR;
-
-typedef struct
-{
-    VOID *Buffer;
-    UINTN MapSize;
-    UINTN MapKey;
-    UINTN DescriptorSize;
-    UINT32 DescriptorVersion;
-} MEMORY_MAP;
-
-typedef struct
-{
-    UINTN Size;
-    UINTN PageSize;
-    UINTN Width;
-    UINTN Height;
-    UINTN Offset;
-    UINT64 PixelStart;
-    UINT64 BitsPerPx;
-} BMP_CONFIG;
-
-typedef struct SDT_HEADER
-{
-    CHAR8 Signature[4];
-    UINT32 Length;
-    UINT8 Revision;
-    UINT8 CheckSum;
-    CHAR8 OEMID[6];
-    CHAR8 TableID[8];
-    UINT32 OEMRevision;
-    UINT32 CreatorID;
-    UINT32 CreatorRevision;
-} SDT_HEADER;
-
-typedef struct MADT
-{
-    SDT_HEADER Header;
-    UINT32 LapicAddress;
-    UINT32 Flags;
-} MADT;
-
-typedef struct MADT_ENTRY
-{
-    UINT8 EntryType;
-    UINT8 RecordLength;
-} MADT_ENTRY;
-
-typedef struct LAPIC
-{
-    MADT_ENTRY Entry;
-    UINT8 ProcessorID;
-    UINT8 LapicID;
-    UINT32 Flags;
-} LAPIC;
-
-typedef struct IOAPIC
-{
-    MADT_ENTRY Entry;
-    UINT8 IopaicID;
-    UINT8 Reserved;
-    UINT32 IoapicAddress;
-    UINT32 GlobalSystemInterruptBase;
-} IOAPIC;
-
-typedef struct ISO
-{
-    MADT_ENTRY Entry;
-    UINT8 BusSource;
-    UINT8 IrqSourece;
-    UINT32 Gsi;
-    UINT16 Flags;
-} ISO;
-
-typedef struct NMI
-{
-    MADT_ENTRY Entry;
-    UINT8 AcpiProcessorID;
-    UINT16 Flags;
-    UINT8 Lint;
-} NMI;
-
-
+#include <Uefi.h>
 ///
 /// Data structure that precedes all of the standard EFI table types.
 ///
@@ -249,11 +31,47 @@ typedef struct {
   UINT32    Reserved;
 } EFI_TABLE_HEADER;
 
-
+typedef struct {
+  UINT16    Year;
+  UINT8     Month;
+  UINT8     Day;
+  UINT8     Hour; 
+  UINT8     Minute;
+  UINT8     Second;
+  UINT8     Pad1;
+  UINT32    Nanosecond;
+  INT16     TimeZone;
+  UINT8     Daylight;
+  UINT8     Pad2;
+} EFI_TIME;
 ///
 /// This provides the capabilities of the
 /// real time clock device as exposed through the EFI interfaces.
 ///
+typedef struct {
+  ///
+  /// Provides the reporting resolution of the real-time clock device in
+  /// counts per second. For a normal PC-AT CMOS RTC device, this
+  /// value would be 1 Hz, or 1, to indicate that the device only reports
+  /// the time to the resolution of 1 second.
+  ///
+  UINT32     Resolution;
+  ///
+  /// Provides the timekeeping accuracy of the real-time clock in an
+  /// error rate of 1E-6 parts per million. For a clock with an accuracy
+  /// of 50 parts per million, the value in this field would be
+  /// 50,000,000.
+  ///
+  UINT32     Accuracy;
+  ///
+  /// A TRUE indicates that a time set operation clears the device's
+  /// time below the Resolution reporting level. A FALSE
+  /// indicates that the state below the Resolution level of the
+  /// device is not cleared when the time is set. Normal PC-AT CMOS
+  /// RTC devices set this value to FALSE.
+  ///
+  BOOLEAN    SetsToZero;
+} EFI_TIME_CAPABILITIES;
 
 typedef struct {
   UINT32    Data1;
@@ -279,13 +97,13 @@ typedef GUID EFI_GUID;
                                 The platform should describe this runtime service as unsupported at runtime
                                 via an EFI_RT_PROPERTIES_TABLE configuration table.
 
-
+**/
 typedef
 EFI_STATUS
 (EFIAPI *EFI_GET_TIME)(
   OUT  EFI_TIME                    *Time,
   OUT  EFI_TIME_CAPABILITIES       *Capabilities OPTIONAL
-  );**/
+  );
 
 /**
   Sets the current local time and date information.
@@ -715,15 +533,3 @@ typedef struct {
   //
   EFI_QUERY_VARIABLE_INFO           QueryVariableInfo;
 } EFI_RUNTIME_SERVICES;
-
-typedef struct
-{
-    VIDEO_CONFIG VideoConfig;
-    MEMORY_MAP   MemoryMap;
-    BMP_CONFIG   AsciiBmp;
-    EFI_PHYSICAL_ADDRESS KernelEntryPoint;
-    EFI_PHYSICAL_ADDRESS MadtAddress;
-    EFI_RUNTIME_SERVICES *RunTimeServices;
-} BOOT_CONFIG;
-
-#pragma pack()
