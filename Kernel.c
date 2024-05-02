@@ -119,7 +119,7 @@ UINT64 KernelStart(BOOT_CONFIG *BootConfig)
     PrintDec(CurrentTime.Second);
     PrintSpace();
     PrintDec(CurrentTime.Nanosecond);
-
+    PrintSpace();
     BootConfig->RunTimeServices->ResetSystem(EfiResetShutdown, 0, 4096, NULL);
     while(1);
     return PassBack;
