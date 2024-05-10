@@ -91,7 +91,7 @@ UINT64 KernelStart(BOOT_CONFIG *BootConfig)
 
     }*/
 
-    
+    sizeof(INT16);
     BOOLEAN Enabled;
     BOOLEAN Pending;
     EFI_TIME WakeupTime;
@@ -103,7 +103,7 @@ UINT64 KernelStart(BOOT_CONFIG *BootConfig)
     EFI_STATUS Status;
     EFI_TIME CurrentTime;
     EFI_TIME_CAPABILITIES CurrentTimeCap;
-    Status = BootConfig->RunTimeServices->GetTime(&CurrentTime, NULL);
+    /* Status = BootConfig->RunTimeServices->GetTime(&CurrentTime, NULL);
     PrintHex(Status);
     PrintSpace();
     PrintDec(CurrentTime.Year);
@@ -120,7 +120,7 @@ UINT64 KernelStart(BOOT_CONFIG *BootConfig)
     PrintSpace();
     PrintDec(CurrentTime.Nanosecond);
     PrintSpace();
-    BootConfig->RunTimeServices->ResetSystem(EfiResetShutdown, 0, 4096, NULL);
+    BootConfig->RunTimeServices->ResetSystem(EfiResetShutdown, 0, 4096, NULL); */
     while(1);
     return PassBack;
 }
